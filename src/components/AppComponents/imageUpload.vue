@@ -46,7 +46,7 @@ export default {
         console.log('图片大小:'+size)
         // 判断上传文件的大小
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传图片大小不能超过 2MB!')
         } else if (files.type.indexOf('image') === -1) { // 如果不是图片格式
           // this.$dialog.toast({ mes: '请选择图片文件' });
           this.$message.error('请选择图片文件')
@@ -90,8 +90,8 @@ export default {
 
 .bigImg {
   display: flex;
-  width: 200px;
-  height: 200px;
+  max-width: 500px;
+  max-height: 300px;
   margin-left: auto;
   margin-right: auto;
   vertical-align: center;

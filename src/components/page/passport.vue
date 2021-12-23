@@ -18,7 +18,7 @@
         <el-button type="primary" @click="addDemand">确认</el-button>
       </div>
     </div>
-    <div id="right_part">
+    <div id="right_part" v-loading="isLoading">
       <image-display :displayUrl="displayUrl"></image-display>
     </div>
   </div>
@@ -37,6 +37,7 @@ export default {
   },
   data() {
     return {
+      isLoading:false,
       options: [{
         value: 'red',
         label: '红色'
@@ -67,7 +68,7 @@ export default {
         bkgcolor: that.bkgcolor
       }
       console.log(map)
-
+      this.isLoading=true
       request.post(serverUrl, {
         personal: "{\"color\":\"" + that.bkgcolor + "\"}",
         type: 'passport',
@@ -75,6 +76,7 @@ export default {
         name: 'huandi.jpg',
       }).then(res => {
         console.log(res)
+        that.isLoading=false
         that.displayUrl = res.message
         this.$message({
           type: "success",
@@ -94,14 +96,14 @@ export default {
   background-color: #eee;
   float: left;
   width: 50%;
-  height: 440px;
+  height: calc(100vh - 180px);
 
 }
 #right_part {
   background-color: #eee;
   float: right;
   width: 49%;
-  height: 440px;
+  height: calc(100vh - 180px);
 }
 #change_btn {
   visibility: hidden;

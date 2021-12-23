@@ -7,7 +7,7 @@
         确认
       </el-button>
     </div>
-    <div id="right_part">
+    <div id="right_part" v-loading="isLoading">
       <image-display :displayUrl="displayUrl"></image-display>
     </div>
   </div>
@@ -28,6 +28,7 @@ export default {
     return {
       imagebase64: '',
       displayUrl: '',
+      isLoading:false,
     }
   },
   methods: {
@@ -36,6 +37,7 @@ export default {
     },
     submit() {
       const that = this
+      this.isLoading=true
       request.post(serverUrl, {
         type: 'addNoise',
         img: this.imagebase64,
@@ -43,6 +45,7 @@ export default {
       }).then(res => {
         console.log(res)
         that.displayUrl = res.message
+        that.isLoading=false
         this.$message({
           type: "success",
           message: "提交成功"
@@ -58,14 +61,14 @@ export default {
   background-color: #eee;
   float: left;
   width: 50%;
-  height: 440px;
+  height: calc(100vh - 180px);
 
 }
 #right_part {
   background-color: #eee;
   float: right;
   width: 49%;
-  height: 440px;
+  height: calc(100vh - 180px);
   vertical-align: center;
 
 }

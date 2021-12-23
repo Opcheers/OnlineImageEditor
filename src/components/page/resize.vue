@@ -15,7 +15,7 @@
         </template>
       </div>
     </div>
-    <div id="right_part">
+    <div id="right_part" v-loading="isLoading" >
       <image-display :displayUrl="displayUrl"></image-display>
     </div>
   </div>
@@ -35,6 +35,7 @@ export default {
       height: '',
       imagebase64: '',
       displayUrl: '',
+      isLoading:false,
     }
   },
   components: {
@@ -48,6 +49,7 @@ export default {
     changeSize() {
       console.log('width:' + this.width + ', height:' + this.height)
       const that = this
+      this.isLoading=true
       request.post(serverUrl, {
         personal: '{\"width\":\"' + that.width + '\",' + '\"height\":\"' + that.height + '\"}',
         type: 'resize',
@@ -55,12 +57,14 @@ export default {
         name: 'cat2.jpg',
       }).then(res => {
         console.log(res)
+        that.isLoading=false
         that.displayUrl = res.message
         this.$message({
           type: "success",
           message: "提交成功"
         })
       }).catch(function (e) {
+        this.isLoading=false
         console.log(e)
       })
     }
@@ -77,13 +81,13 @@ export default {
   background-color: #eee;
   float: left;
   width: 50%;
-  height: 440px;
+  height: calc(100vh - 180px);
 }
 #right_part {
   background-color: #eee;
   float: right;
   width: 49%;
-  height: 440px;
+  height: calc(100vh - 180px);
 }
 #change_btn {
   visibility: hidden;

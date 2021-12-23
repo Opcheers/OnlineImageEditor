@@ -7,7 +7,12 @@
         <template>
           <el-row>
             <span>图片风格&nbsp&nbsp</span>
-            <el-select v-model="imagestyle" placeholder="请选择图片风格" @change="displaystyle" style="width: auto">
+            <el-select
+              v-model="imagestyle"
+              placeholder="请选择图片风格"
+              @change="displaystyle"
+              style="width: auto"
+            >
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -18,10 +23,10 @@
             <el-button type="primary" @click="addDemand">确认</el-button>
           </el-row>
         </template>
-        <img id="styleImg" class="bigImg " :src=styleUrl v-if="styleUrl">
+        <img id="styleImg" class="bigImg" :src="styleUrl" v-if="styleUrl" />
       </div>
     </div>
-    <div id="right_part">
+    <div id="right_part" v-loading="isLoading">
       <image-display :displayUrl="displayUrl"></image-display>
     </div>
   </div>
@@ -42,7 +47,7 @@ export default {
   },
   data() {
     return {
-
+    isLoading:false,
       options: [{
         value: '1',
         label: '1'
@@ -96,6 +101,7 @@ export default {
         that.$message.error("请选择图片风格")
         return
       }
+      this.isLoading=true
       request.post(serverUrl, {
         personal: "{\"style\":\"" + that.imagestyle + ".jpg\"}",
         type: 'style',
@@ -105,6 +111,7 @@ export default {
         timeout: 60000
       }).then(res => {
         console.log(res)
+        this.isLoading=false
         that.displayUrl = res.message
         this.$message({
           type: "success",
@@ -145,8 +152,8 @@ export default {
 }
 .bigImg {
   display: flex;
-  width: 200px;
-  height: 200px;
+  max-width: 500px;
+  max-height: 300px;
   margin-left: auto;
   margin-right: auto;
   vertical-align: center;
